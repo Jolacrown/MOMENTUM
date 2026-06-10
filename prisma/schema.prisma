@@ -1,0 +1,287 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────
+
+enum SkillLevel {
+  beginner
+  intermediate
+  advanced
+}
+
+enum LearningStyle {
+  video
+  reading
+  practice
+  mixed
+}
+
+enum GoalStatus {
+  active
+  paused
+  completed
+}
+
+enum UserStatus {
+  onboarding
+  active
+  inactive
+  streak_broken
+  recovering
+  milestone_reached
+  churn_risk
+}
+
+enum RecommendationType {
+  mentor
+  course
+  workshop
+  resource
+}
+
+enum SubscriptionTier {
+  free
+  premium
+}
+
+enum CoachTrigger {
+  checkin
+  milestone
+  recovery
+  weekly
+}
+
+// ─── TABLES ───────────────────────────────────────────────
+
+model User {
+  id                String          @id @default(uuid())
+  email             String          @unique
+  passwordHash      String          @map("password_hash")
+  name              String
+  skillLevel        SkillLevel?     @map("skill_level")
+  learningStyle     LearningStyle?  @map("learning_style")
+  dailyTimeMinutes  Int?            @map("daily_time_minutes")
+  timezone          String          @default("Africa/Lagos")
+  status            UserStatus      @default(onboarding)
+  subscriptionTier  SubscriptionTier @default(free) @map("subscription_tier")
+  onboardingStep    Int             @default(0) @map("onboarding_step")
+  onboardingData    Json?           @map("onboarding_data")  // key-value store per step
+  reminderTime      String?         @map("reminder_time")       // "HH:MM" 24h
+  notificationIgnoredCount Int      @default(0) @map("notification_ignored_count")
+  flwCustomerId     String?         @map("flw_customer_id")
+  premiumExpiresAt  DateTime?       @map("premium_expires_at")
+  consentAcceptedAt DateTime?       @map("consent_accepted_at")
+  consentVersion    String?         @map("consent_version")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  deletedAt         DateTime?       @map("deleted_at")          // soft delete
+
+  goals             Goal[]
+  checkins          Checkin[]
+  streak            Streak?
+  coachMessages     CoachMessage[]
+  payments          Payment[]
+  recommendations  UserRecommendation[]
+  refreshTokens     RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  notificationLogs  NotificationLog[]
+  webhookEvents     WebhookEvent[]
+
+  @@index([email])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([tokenHash])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model Goal {
+  id              String      @id @default(uuid())
+  userId          String      @map("user_id")
+  title           String
+  status          GoalStatus  @default(active)
+  progressPercent Int         @default(0) @map("progress_percent")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  deletedAt       DateTime?   @map("deleted_at")
+
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checkins        Checkin[]
+
+  @@index([userId])
+  @@index([userId, status])
+  @@index([deletedAt])
+  @@map("goals")
+}
+
+model Checkin {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  goalId        String    @map("goal_id")
+  date          DateTime  @db.Date
+  taskCompleted Boolean   @default(false) @map("task_completed")
+  mood          Int?                              // 1–5
+  notes         String?                           // encrypted at app layer
+  effortLevel   Int?      @map("effort_level")   // 1=low, 2=medium, 3=high
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal          Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, goalId, date])
+  @@index([userId, date])
+  @@index([goalId])
+  @@map("checkins")
+}
+
+model Streak {
+  id                String    @id @default(uuid())
+  userId            String    @unique @map("user_id")
+  currentStreak     Int       @default(0) @map("current_streak")
+  longestStreak     Int       @default(0) @map("longest_streak")
+  recoveryStreak    Int       @default(0) @map("recovery_streak")
+  lastCompletedDate DateTime? @db.Date @map("last_completed_date")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("streaks")
+}
+
+model CoachMessage {
+  id           String       @id @default(uuid())
+  userId       String       @map("user_id")
+  content      String
+  trigger      CoachTrigger
+  inputTokens  Int?         @map("input_tokens")
+  outputTokens Int?         @map("output_tokens")
+  costUsd      Float?       @map("cost_usd")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("coach_messages")
+}
+
+model Recommendation {
+  id          String              @id @default(uuid())
+  type        RecommendationType
+  title       String
+  url         String?
+  tags        String[]            @default([])
+  skillLevel  SkillLevel?         @map("skill_level")
+  isLocal     Boolean             @default(false) @map("is_local")
+  isActive    Boolean             @default(true) @map("is_active")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+
+  userLinks   UserRecommendation[]
+
+  @@index([type])
+  @@index([skillLevel])
+  @@index([isActive])
+  @@map("recommendations")
+}
+
+model UserRecommendation {
+  id               String         @id @default(uuid())
+  userId           String         @map("user_id")
+  recommendationId String         @map("recommendation_id")
+  clickedAt        DateTime?      @map("clicked_at")
+  shownAt          DateTime       @default(now()) @map("shown_at")
+
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recommendation   Recommendation @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recommendationId])
+  @@index([userId])
+  @@map("user_recommendations")
+}
+
+model Payment {
+  id               String         @id @default(uuid())
+  userId           String         @map("user_id")
+  flutterwaveTxRef String         @unique @map("flutterwave_tx_ref")
+  flutterwaveTxId  String?        @map("flutterwave_tx_id")
+  amount           Int
+  currency         String         @default("NGN")
+  status           String
+  plan             String
+  periodStart      DateTime?      @map("period_start")
+  periodEnd        DateTime?      @map("period_end")
+  verifiedAt       DateTime?      @map("verified_at")
+  createdAt        DateTime       @default(now()) @map("created_at")
+
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([flutterwaveTxRef])
+  @@map("payments")
+}
+
+model WebhookEvent {
+  id          String   @id @default(uuid())
+  webhookId   String   @unique                                       // FLW webhook event id — for idempotency
+  type        String
+  userId      String?  @map("user_id")                               // optional — filled when event relates to a known user
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([webhookId])
+  @@index([processedAt])
+  @@map("webhook_events")
+}
+
+model NotificationLog {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  type        String                             // "reminder" | "milestone" | "recovery"
+  wasDelivered Boolean  @default(true) @map("was_delivered")
+  sentAt      DateTime  @default(now()) @map("sent_at")
+  openedAt    DateTime? @map("opened_at")
+  dismissed   Boolean   @default(false)
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, sentAt])
+  @@index([userId, sentAt, wasDelivered])
+  @@map("notification_logs")
+}
