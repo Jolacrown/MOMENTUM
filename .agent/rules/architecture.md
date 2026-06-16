@@ -35,11 +35,10 @@ Momentum follows a **feature-based modular architecture**. Group files by domain
 
 ## Frontend Architecture
 
-- **Framework**: React Native (mobile) / Next.js App Router (web)
+- **Framework**: Next.js App Router
 - **State management**: Zustand for local/feature state; React Query for server state
-- **Navigation**: React Navigation (mobile) / Next.js routing (web)
+- **Navigation**: Next.js routing
 - **Forms**: React Hook Form + Zod validation
-- **API layer**: Centralised `lib/api.ts` client — never call fetch directly from components
 
 ### Routing Structure (Web)
 

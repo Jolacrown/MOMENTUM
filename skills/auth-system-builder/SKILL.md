@@ -466,7 +466,7 @@ Store the state on the User model as `state` enum. Use it in `requireAuth` to bl
 
 ---
 
-## Onboarding Screen Structure (React Native / Next.js)
+## Onboarding Screen Structure (Next.js)
 
 ```tsx
 // Multi-step wizard with progress indicator
@@ -494,8 +494,7 @@ const ONBOARDING_STEPS = [
 ## Protected Routes (Frontend)
 
 ```ts
-// React: redirect to /auth/login if no valid session
-// React Native: redirect to Auth stack if no stored token
+// Redirect to /auth/login if no valid session
 
 function useRequireAuth() {
   const { user, isLoading } = useAuth();

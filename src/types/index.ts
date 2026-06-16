@@ -10,8 +10,8 @@ export interface User {
   email: string;
   skillLevel?: SkillLevel;
   learningStyle?: LearningStyle;
-  dailyTimePreference?: number; // in minutes
-  reminderTime?: string; // HH:mm format
+  dailyTimePreference?: number;
+  reminderTime?: string;
   isOnboarded: boolean;
   isPremium: boolean;
   createdAt: Date;
@@ -28,4 +28,17 @@ export interface Goal {
   lastCheckinAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type NotificationType = 'streak' | 'checkin' | 'coach' | 'goal' | 'milestone' | 'reminder';
+
+export interface AppNotification {
+  id: string;
+  title: string;
+  body: string;
+  type: NotificationType;
+  read: boolean;
+  createdAt: string;
+  actionLabel?: string;
+  actionRoute?: string;
 }

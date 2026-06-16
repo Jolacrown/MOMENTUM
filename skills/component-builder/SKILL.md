@@ -68,7 +68,6 @@ Every component file follows this structure:
 /src/components/[component-name]/
   index.tsx          ← main component
   [name].types.ts    ← Props interface + variant types
-  [name].styles.ts   ← StyleSheet (RN) or CSS module (web)
   [name].test.tsx    ← component tests
 ```
 
@@ -107,26 +106,8 @@ interface Props {
 
 Always use design-system tokens — never hardcode colours, spacing, or font sizes.
 
-```ts
-// React Native — StyleSheet with tokens
-import { colors, spacing, radius, typography } from '@/styles/tokens';
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.bgSurface,
-    borderRadius: radius.lg,
-    padding: spacing[20],
-  },
-  streakNumber: {
-    fontFamily: typography.fontDisplay,
-    fontSize: typography.text3xl,
-    color: colors.primary500,
-  },
-});
-```
-
 ```tsx
-// Web / Next.js — Tailwind with design token class names
+// Tailwind with design token class names
 // Use only classes mapped to design-system variables
 <div className="bg-bg-surface rounded-lg p-5 border border-white/[0.06]">
 ```
@@ -272,7 +253,7 @@ interface MilestoneOverlayProps {
 - Full-screen dark overlay (`bg-bg-base/95`)
 - Centre: streak number in `text-4xl`, `font-display`, orange
 - Subtitle: milestone-specific copy (see copy map below)
-- Confetti burst on mount (use `react-native-confetti-cannon` or `canvas-confetti`)
+- Confetti burst on mount (use `canvas-confetti`)
 - Auto-dismiss after 4 seconds OR on tap — whichever comes first
 - `accent-purple` (#A78BFA) as secondary colour for this celebration context
 

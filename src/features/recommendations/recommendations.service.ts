@@ -1,47 +1,37 @@
-/**
- * Recommendations Service.
- * Provides personalized learning resources and mentors.
- * Per architecture.md and AGENTS.md.
- */
+import { supabase } from '@/lib/supabase-web';
 
 export interface Recommendation {
   id: string;
   type: 'mentor' | 'course' | 'workshop' | 'resource';
+  resource_type: string | null;
+  category: string | null;
   title: string;
-  subtitle: string;
-  url: string;
+  url: string | null;
   tags: string[];
+  skill_level: string;
+  is_active: boolean;
 }
 
-const MOCK_RECOMMENDATIONS: Recommendation[] = [
-  {
-    id: 'rec_1',
-    type: 'mentor',
-    title: 'Bankole Williams',
-    subtitle: 'Career Coach & Performance Consultant (Lagos)',
-    url: 'https://bankolewilliams.com/',
-    tags: ['career', 'nigeria', 'mentorship'],
-  },
-  {
-    id: 'rec_2',
-    type: 'course',
-    title: 'Google UX Design Professional Certificate',
-    subtitle: '7-course series on Coursera',
-    url: 'https://www.coursera.org/professional-certificates/google-ux-design',
-    tags: ['design', 'ux', 'certificate'],
-  },
-  {
-    id: 'rec_3',
-    type: 'resource',
-    title: 'Design Nigeria Slack Community',
-    subtitle: 'Network with 5,000+ Nigerian designers',
-    url: 'https://designnigeria.com/',
-    tags: ['community', 'nigeria', 'design'],
-  },
-];
+export const getRecommendations = async (
+  filters?: { resource_type?: string; category?: string; skill_level?: string }
+): Promise<Recommendation[]> => {
+  let query = supabase.from('recommendations').select('*').eq('is_active', true);
 
-export const getRecommendations = async (): Promise<Recommendation[]> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 800));
-  return MOCK_RECOMMENDATIONS;
+  if (filters?.resource_type) {
+    query = query.eq('resource_type', filters.resource_type);
+  }
+  if (filters?.category) {
+    query = query.eq('category', filters.category);
+  }
+  if (filters?.skill_level) {
+    query = query.eq('skill_level', filters.skill_level);
+  }
+
+  const { data, error } = await query.order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching recommendations from Supabase:', error.message);
+    return [];
+  }
+  return data || [];
 };

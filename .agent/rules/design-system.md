@@ -100,7 +100,7 @@ accentPurple:'#A78BFA'   // Celebration contexts (MilestoneOverlay)
 ### Typography Scale
 
 ```ts
-fontDisplay: 'Inter',          // headings (system font fallback on RN)
+fontDisplay: 'Inter',          // headings
 fontBody:    'Inter',          // body text
 
 textxs:    12                  // captions, badges
@@ -163,24 +163,10 @@ duration: {
 }
 easing: {
   default: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  spring:  { damping: 15, stiffness: 200 },  // RN Animated.spring
 }
 ```
 
 ---
-
-## Platform-Specific Rules
-
-| Concern | React Native | Web (Next.js) |
-|---|---|---|
-| Font family | System font (SF Pro / Roboto) + Inter via custom font | Inter via `next/font` |
-| Navigation | React Navigation stack | Next.js App Router |
-| Safe areas | `useSafeAreaInsets` from `react-native-safe-area-context` | `env(safe-area-inset-*)` CSS |
-| Shadows | `elevation` prop + `shadowColor` | `box-shadow` from tokens |
-| Animations | `Animated` / `Reanimated` | CSS transitions / Framer Motion |
-| Touch targets | 44×44px minimum (OS requirement) | 44×44px minimum (WCAG guideline) |
-| Gestures | Swipe-to-dismiss, pull-to-refresh | Click, hover (no gesture dependency) |
-| Haptic feedback | Use `expo-haptics` or `react-native-haptic-feedback` | N/A |
 
 ---
 
@@ -237,7 +223,7 @@ Every interactive component must handle these states (see `component-builder` sk
 
 ## Iconography
 
-- Use **Lucide Icons** (web) / `lucide-react-native` (mobile) — consistent, open-source, well-maintained
+- Use **Lucide Icons** — consistent, open-source, well-maintained
 - Size: 16px (inline), 20px (buttons), 24px (standalone), 32px (large indicators)
 - Colour: inherit from text colour by default; primary-500 for active states
 - All icon-only buttons must have `accessibilityLabel`
@@ -317,7 +303,7 @@ The onboarding flow is the user's first impression. Must be completable in under
 - Hero section: feature comparison (Free vs Premium) in a two-column card layout
 - Price: display in NGN (₦) — Flutterwave processes in NGN
 - CTA: "Start Premium — ₦X,XXX/month" with Flutterwave payment modal trigger
-- Footer: "Cancel anytime" link, "Restore Purchases" (mobile)
+- Footer: "Cancel anytime" link
 - Never use countdown timers or scarcity tactics
 
 ### Post-Upgrade
@@ -398,7 +384,6 @@ Errors should explain the issue, provide a recovery action, and avoid technical 
 
 - Duration: 150ms (micro-interactions), 300ms (standard), 500ms (screen transitions)
 - Easing: `cubic-bezier(0.4, 0, 0.2, 1)` for all CSS transitions
-- Spring (RN): damping 15, stiffness 200 for tap feedback
 - Respect `prefers-reduced-motion`: disable all animations, show instant transitions
 - Never use motion for branding or decoration — every animation must serve a purpose
 

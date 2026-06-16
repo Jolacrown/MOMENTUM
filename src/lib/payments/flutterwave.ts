@@ -1,3 +1,5 @@
+import 'server-only';
+
 /**
  * Flutterwave Integration Service.
  * Per flutterwave-integration skill and security.md.
@@ -28,20 +30,23 @@ export const initiatePayment = async (data: PaymentInitialization) => {
   const secretKey = process.env.FLW_SECRET_KEY;
   
   if (!secretKey || secretKey === 'your_flutterwave_secret_key_here') {
-    console.log('[MOCK_PAYMENT] Initiating payment for:', data.customer.email);
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return {
-      status: 'success',
-      message: 'Hosted payment link generated (MOCK)',
-      data: {
-        link: 'https://flutterwave.com/pay/momentum-premium-mock',
-      }
-    };
+    throw new Error('Flutterwave secret key not configured');
   }
 
-  // Real implementation would call FLW API
-  return { status: 'error', message: 'Not implemented' };
+  const response = await fetch('https://api.flutterwave.com/v3/payments', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Payment initiation failed: ${response.statusText}`);
+  }
+
+  return response.json();
 };
 
 /**
@@ -49,6 +54,30 @@ export const initiatePayment = async (data: PaymentInitialization) => {
  * ALWAYS call this from the backend.
  */
 export const verifyTransaction = async (txId: string) => {
-  // Logic to call GET https://api.flutterwave.com/v3/transactions/:id/verify
-  return { status: 'successful', amount: 5000, currency: 'NGN' };
+  if (!txId) {
+    throw new Error('Transaction ID is required');
+  }
+
+  const secretKey = process.env.FLW_SECRET_KEY;
+
+  if (!secretKey || secretKey === 'your_flutterwave_secret_key_here') {
+    throw new Error('Flutterwave secret key not configured');
+  }
+
+  const response = await fetch(
+    `https://api.flutterwave.com/v3/transactions/${encodeURIComponent(txId)}/verify`,
+    {
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Transaction verification failed: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data;
 };

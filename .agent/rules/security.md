@@ -33,11 +33,6 @@ POST /auth/forgot-password: 3 req / 15min per IP    // prevents email bombing
 POST /auth/refresh:         10 req / 15min per IP
 ```
 
-### Mobile Session Management
-- **Idle timeout**: auto-logout after 7 days of inactivity on mobile (reset on app open if authenticated)
-- **Biometric auth** (optional): support Face ID / fingerprint as secondary unlock — never as sole auth factor
-- Secure storage: Keychain (iOS) / Keystore (Android) — never AsyncStorage for tokens
-
 ---
 
 ## API Security
@@ -233,15 +228,6 @@ const safeNotes = notes
 
 ---
 
-## Mobile Security (React Native)
-
-- Store tokens in **Keychain (iOS) / Keystore (Android)** — never AsyncStorage for sensitive data
-- Certificate pinning for production API calls
-- Disable screenshot on sensitive screens (payment, account data)
-- Obfuscate release builds (Hermes + ProGuard/R8)
-- No sensitive data in `console.log` — strip all logs in production builds
-- Auto-logout after 7 days of inactivity (see Authentication section)
-
 ---
 
 ## Environment Variable Security
@@ -293,7 +279,7 @@ Refresh tokens stored in `httpOnly` cookies (web) are vulnerable to CSRF. Mitiga
 2. **Origin/Referrer header validation** in the `/api/auth/refresh` handler — reject requests with unexpected `Origin` or `Referer` headers
 3. For extra safety: implement the **double-submit cookie pattern** — set a non-`httpOnly` random CSRF token cookie on login, require it as a custom header (`X-CSRF-Token`) on state-changing requests
 
-Mobile clients (React Native) are not vulnerable to CSRF; use the same cookie configuration for codebase consistency but skip header validation.
+Use the same cookie configuration across the codebase for consistency.
 
 ---
 

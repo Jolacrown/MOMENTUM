@@ -14,7 +14,7 @@ Generates complete, production-ready screens for Momentum. Each screen is compos
 ## When to Load
 
 - Building a new page or screen from scratch
-- Converting a web page to mobile (React Native) or vice versa
+- Building a new page or screen from scratch
 - Adding data fetching, state management, or navigation to a screen
 - Implementing onboarding wizards, check-in flows, dashboard views, or premium gating
 - Any task that produces a full UI view
@@ -131,76 +131,6 @@ type UserStatus = 'onboarding' | 'active' | 'inactive' | 'streak-broken' | 'reco
 ```
 
 ---
-
-## Screen Template (React Native)
-
-```tsx
-// src/features/checkins/screens/daily-checkin.tsx
-import { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { tokens } from '@/styles/tokens';
-import { useCheckin } from '../hooks/use-checkin';
-import { MoodSelector } from '@/components/MoodSelector';
-import { TaskToggle } from '@/components/TaskToggle';
-import { NotesInput } from '@/components/NotesInput';
-import { Button } from '@/components/Button';
-import { Skeleton } from '@/components/Skeleton';
-import { ErrorBanner } from '@/components/ErrorBanner';
-import { useOfflineBanner } from '@/hooks/use-offline-banner';
-import { styles } from './daily-checkin.styles';
-
-export function DailyCheckinScreen() {
-  const insets = useSafeAreaInsets();
-  const { submit, isSubmitting, error, isLoading, todayCheckin, goals } = useCheckin();
-  const isOffline = useOfflineBanner();
-
-  const [mood, setMood] = useState<number>(3);
-  const [effort, setEffort] = useState<number>(2);
-  const [notes, setNotes] = useState('');
-  const [completedTasks, setCompletedTasks] = useState<Record<string, boolean>>({});
-
-  if (isLoading) return <Skeleton />;
-  if (error) return <ErrorBanner message={error} onRetry={() => {}} />;
-
-  return (
-    <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
-      {isOffline && (
-        <View style={styles.offlineBanner}>
-          <Text style={styles.offlineText}>You're offline. Your check-in saves when you reconnect.</Text>
-        </View>
-      )}
-
-      <Text style={styles.title}>Today's Check-in</Text>
-
-      {goals.length === 0 ? (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>Nothing to track yet</Text>
-          <Text style={styles.emptySubtitle}>Create a goal to start checking in</Text>
-        </View>
-      ) : (
-        goals.map((goal) => (
-          <TaskToggle
-            key={goal.id}
-            label={goal.title}
-            checked={completedTasks[goal.id] ?? false}
-            onChange={(val) => setCompletedTasks((prev) => ({ ...prev, [goal.id]: val }))}
-          />
-        ))
-      )}
-
-      <MoodSelector value={mood} onChange={setMood} />
-      <NotesInput value={notes} onChange={setNotes} maxLength={500} />   {/* AGENTS.md §7: max 500 chars */}
-
-      <Button
-        title={isSubmitting ? 'Saving...' : 'Complete Check-in'}
-        onPress={() => submit({ mood, effort, notes, completedTasks })}
-        disabled={isSubmitting}
-      />
-    </ScrollView>
-  );
-}
-```
 
 ---
 
@@ -481,21 +411,16 @@ function StreakBadge({ current, atRisk, isBroken }: StreakBadgeProps) {
 
 ## Offline Handling
 
-Dual-platform implementation:
-
 ```tsx
 // hooks/use-offline-banner.ts
 
 import { useState, useEffect } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
-// On web, navigator.onLine is available natively
 
 export function useOfflineBanner(): boolean {
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'onLine' in navigator) {
-      // Web
       const onOffline = () => setIsOffline(true);
       const onOnline = () => setIsOffline(false);
       window.addEventListener('offline', onOffline);
@@ -506,25 +431,6 @@ export function useOfflineBanner(): boolean {
         window.removeEventListener('online', onOnline);
       };
     }
-
-    // React Native — requires @react-native-community/netinfo
-    import('@react-native-community/netinfo').then((NetInfo) => {
-      const unsubscribe = NetInfo.addEventListener((state) => {
-        setIsOffline(!state.isConnected);
-      });
-      return unsubscribe;
-    });
-
-    // Fallback for RN: listen to app state changes for reconnection check
-    const subscription = AppState.addEventListener('change', (nextState: AppStateStatus) => {
-      if (nextState === 'active') {
-        import('@react-native-community/netinfo').then((NetInfo) => {
-          NetInfo.fetch().then((state) => setIsOffline(!state.isConnected));
-        });
-      }
-    });
-
-    return () => subscription.remove();
   }, []);
 
   return isOffline;
@@ -536,39 +442,6 @@ See `design-system.md` §Offline & Connectivity UI for the full 6-scenario behav
 ---
 
 ## Navigation Wiring
-
-### React Native (React Navigation)
-
-```tsx
-// AppNavigator.tsx
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-type RootStackParamList = {
-  Dashboard: undefined;
-  Checkin: { goalId?: string };
-  Coach: undefined;
-  GoalDetail: { goalId: string };
-  StreakHistory: { userId: string };
-  Upgrade: { plan?: 'monthly' | 'annual' };
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
-export function AppNavigator() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Dashboard" component={DashboardScreen} />
-      <Stack.Screen name="Checkin" component={DailyCheckinScreen} />
-      <Stack.Screen name="Coach" component={CoachChatScreen} />
-      <Stack.Screen name="GoalDetail" component={GoalDetailScreen} />
-      <Stack.Screen name="StreakHistory" component={StreakHistoryScreen} />
-      <Stack.Screen name="Upgrade" component={UpgradeScreen} />
-    </Stack.Navigator>
-  );
-}
-```
-
-Use typed navigation — never use `useNavigation()` without generics. Route params must be typed in `RootStackParamList`.
 
 ### Next.js (App Router)
 

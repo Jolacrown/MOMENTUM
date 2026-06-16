@@ -50,31 +50,16 @@ const checkin = data as Checkin;
 
 ---
 
-## React / React Native Rules
+## React Rules
 
 - **Functional components only** — no class components
 - Co-locate component logic: one file per component with styles and types nearby
 - Extract all business logic into custom hooks — components handle rendering only
-- No inline styles in JSX. Use StyleSheet (RN) or Tailwind (web).
+- No inline styles in JSX. Use Tailwind utility classes.
 - Memoize expensive components with `React.memo`, expensive calculations with `useMemo`
 - Use `useCallback` for event handlers passed as props
 - Optimise for low-bandwidth: lazy-load images, prefetch critical data, show skeleton placeholders
 - Handle offline state gracefully — cache last-known state locally, sync on reconnect
-
-```tsx
-// ✅ Good — logic in hook
-function CheckinCard() {
-  const { streak, isLoading, handleCheckin } = useCheckin();
-  return <View>...</View>;
-}
-
-// ❌ Bad — logic in component
-function CheckinCard() {
-  const [streak, setStreak] = useState(0);
-  useEffect(() => { fetch('/api/streaks').then(...) }, []);
-  ...
-}
-```
 
 ---
 
@@ -83,7 +68,7 @@ function CheckinCard() {
 Group and order imports consistently:
 
 ```
-1. React / React Native / Next.js
+1. React / Next.js
 2. Third-party libraries (Zustand, TanStack Query, Zod, etc.)
 3. Internal absolute imports (@/features, @/lib, @/components)
 4. Relative imports (./, ../)
@@ -96,12 +81,10 @@ Separate groups with a blank line. No unused imports — enforced by ESLint.
 ```ts
 // ✅ Good
 import { useState } from 'react';
-import { View, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useStreak } from '@/features/streaks/use-streak';
 import { formatDate } from '@/lib/format-date';
 import type { Streak } from '@/types/streak';
-import { styles } from './styles';
 ```
 
 ---
