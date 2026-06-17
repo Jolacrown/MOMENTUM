@@ -139,7 +139,6 @@ Never show "0" — show "—" when streak is 0 and user has never checked in.
 ```tsx
 // Pulse animation (active state only)
 // CSS: @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.4) } 50% { box-shadow: 0 0 0 12px rgba(249,115,22,0) } }
-// RN: Animated.loop with Animated.sequence scaling 1.0 → 1.04 → 1.0
 ```
 
 ---

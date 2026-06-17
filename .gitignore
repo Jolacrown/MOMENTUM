@@ -1,25 +1,14 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
 # dependencies
 node_modules/
 
-# Build outputs
-dist/
-web-build/
+# Next.js build output
+.next/
 
-# Native
-.kotlin/
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+# local env files
+.env*.local
+.env
 
-# Metro
-.metro-health-check*
-
-# debug
+# debug logs
 npm-debug.*
 yarn-debug.*
 yarn-error.*
@@ -28,16 +17,5 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# Next.js
-.next/
-
-# local env files
-.env*.local
-.env
-
 # typescript
 *.tsbuildinfo
-
-# generated native folders
-/ios
-/android

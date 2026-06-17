@@ -12,7 +12,7 @@ import { useAuthStore } from '@/stores/web/auth-store-web';
 const FALLBACK_RESOURCES = [
   { id: 'r1', title: 'Figma 101: UI Design Fundamentals', provider: 'DesignLab', category: 'UI/UX Design', type: 'Course', difficulty: 'Beginner' as const, duration: '4 hours', url: 'https://www.figma.com/community', icon: 'Palette' },
   { id: 'r2', title: 'Design Thinking for Innovators', provider: 'IDEO U', category: 'Product Design', type: 'Course', difficulty: 'Intermediate' as const, duration: '6 weeks', url: 'https://www.ideou.com', icon: 'Layers' },
-  { id: 'r3', title: 'React Native Crash Course', provider: 'Traversy Media', category: 'Mobile Development', type: 'Tutorial', difficulty: 'Intermediate' as const, duration: '2 hours', url: 'https://www.youtube.com', icon: 'Smartphone' },
+  { id: 'r3', title: 'React & Next.js Crash Course', provider: 'Traversy Media', category: 'Web Development', type: 'Tutorial', difficulty: 'Intermediate' as const, duration: '2 hours', url: 'https://www.youtube.com', icon: 'Monitor' },
   { id: 'r4', title: 'Web Development Bootcamp', provider: 'FreeCodeCamp', category: 'Web Development', type: 'Course', difficulty: 'Beginner' as const, duration: '300 hours', url: 'https://www.freecodecamp.org', icon: 'Monitor' },
   { id: 'r5', title: 'UX Research Methods', provider: 'Nielsen Norman Group', category: 'UI/UX Design', type: 'Article', difficulty: 'Advanced' as const, duration: '20 min', url: 'https://www.nngroup.com', icon: 'Palette' },
   { id: 'r6', title: 'Product Strategy Framework', provider: 'Stratechery', category: 'Product Design', type: 'Article', difficulty: 'Advanced' as const, duration: '15 min', url: 'https://stratechery.com', icon: 'Layers' },

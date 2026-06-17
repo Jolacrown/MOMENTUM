@@ -727,7 +727,7 @@ Cross-reference to `design-system.md` and `component-builder` skill for full com
 | Component | States | Key Behaviour |
 |---|---|---|
 | **StreakBadge** | `active` (orange), `at-risk` (yellow), `broken` (muted), `never-started` ("—") | Pulse animation only for active. Tap opens streak history. |
-| **MoodSelector** | 5 emoji scale (1=😢, 2=😕, 3=😐, 4=🙂, 5=😄) | Spring animation on select, haptic feedback (RN). Once set, can only be changed (no deselection). |
+| **MoodSelector** | 5 emoji scale (1=😢, 2=😕, 3=😐, 4=🙂, 5=😄) | Spring animation on select. Once set, can only be changed (no deselection). |
 | **MilestoneOverlay** | Full-screen celebration with confetti | Auto-dismisses after 4s. Shows `"{count} days strong!"` |
 | **DashboardCard** | `loading` (skeleton), `loaded`, `empty` | Uses `bgSurface` background, rounded corners `radius.md` |
 | **ProgressBar** | 0% = "Just getting started" text, 1-99% = filled to percentage, 100% = completed with checkmark | Never show 0% bar — show label instead. |

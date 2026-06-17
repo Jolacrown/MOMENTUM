@@ -149,8 +149,7 @@ shadows: {
   md:   '0px 4px 6px rgba(0,0,0,0.4)',
   lg:   '0px 10px 15px rgba(0,0,0,0.5)',
 }
-// React Native: use elevation values (sm=2, md=4, lg=8)
-// with shadowColor: '#000' and matching opacity
+// box-shadow equivalents for the shadow tokens above
 ```
 
 ### Motion

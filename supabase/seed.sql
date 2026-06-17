@@ -45,10 +45,10 @@ INSERT INTO resources (title, description, category, resource_type, skill_level,
 -- MOBILE DEVELOPMENT (6 resources)
 -- ==============================
 INSERT INTO resources (title, description, category, resource_type, skill_level, duration, thumbnail_url, provider, resource_url) VALUES
-('React Native Crash Course 2024', 'Build your first cross-platform mobile app with React Native. Covers environment setup (Expo), core components, navigation, state management, and deployment.', 'Mobile Development', 'course', 'beginner', '2h 15m', 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80', 'Traversy Media', 'https://www.youtube.com/watch?v=ANdSdIlgsEw');
+('React & Next.js Crash Course 2024', 'Build your first full-stack web app with React 19 and Next.js 15 App Router. Covers server components, data fetching, authentication, and deployment to Vercel.', 'Web Development', 'course', 'beginner', '2h 15m', 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80', 'Traversy Media', 'https://www.youtube.com/watch?v=ANdSdIlgsEw');
 
 INSERT INTO resources (title, description, category, resource_type, skill_level, duration, thumbnail_url, provider, resource_url) VALUES
-('Advanced React Native Animations with Reanimated', 'Master Reanimated 4 and Gesture Handler to build smooth 60fps animations. Covers shared element transitions, gesture interactions, and animated SVG charts.', 'Mobile Development', 'course', 'advanced', '4h 30m', 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80', 'William Candillon', 'https://www.youtube.com/c/WilliamCandillon');
+('Advanced Frontend Animations with Framer Motion', 'Master Framer Motion to build smooth, production-ready animations. Covers layout animations, gesture interactions, scroll-driven animations, and animated SVG charts.', 'Web Development', 'course', 'advanced', '4h 30m', 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80', 'Framer Motion Docs', 'https://www.framer.com/motion/');
 
 INSERT INTO resources (title, description, category, resource_type, skill_level, duration, thumbnail_url, provider, resource_url) VALUES
 ('Flutter for Beginners: Build Beautiful Apps', 'Complete introduction to Flutter and Dart. Build three full apps: a todo app, an e-commerce UI, and a weather app with live API data.', 'Mobile Development', 'course', 'beginner', '4 hours', 'https://images.unsplash.com/photo-1617042375876-a13e36732a04?w=800&q=80', 'freeCodeCamp', 'https://www.youtube.com/watch?v=VPvVD8t02U8');
@@ -60,7 +60,7 @@ INSERT INTO resources (title, description, category, resource_type, skill_level,
 ('Kotlin Android Development with Jetpack Compose', 'Modern Android development with Kotlin and Jetpack Compose. Covers layouts, state management, navigation, Room database, and Material Design 3.', 'Mobile Development', 'course', 'beginner', '2 hours', 'https://images.unsplash.com/photo-1607252650355-f7fd0460ccdb?w=800&q=80', 'Google Codelabs', 'https://developer.android.com/courses/android-basics-compose/course');
 
 INSERT INTO resources (title, description, category, resource_type, skill_level, duration, thumbnail_url, provider, resource_url) VALUES
-('Build a Full-Stack Mobile App with Expo & Supabase', 'Build a production-grade mobile app using Expo Router, Supabase auth, real-time subscriptions, and Stripe payments. Covers the complete stack from start to finish.', 'Mobile Development', 'course', 'intermediate', '6 hours', 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=800&q=80', 'NotJustDev', 'https://www.youtube.com/@notjustdev');
+('Build a Full-Stack Web App with Next.js & Supabase', 'Build a production-grade web app using Next.js 15 App Router, Supabase auth, real-time subscriptions, and payments. Covers the complete stack from start to finish.', 'Web Development', 'course', 'intermediate', '6 hours', 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=800&q=80', 'Fireship', 'https://fireship.io/');
 
 
 -- ==============================

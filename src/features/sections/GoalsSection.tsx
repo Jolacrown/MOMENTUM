@@ -18,7 +18,7 @@ interface DisplayGoal {
 
 const FALLBACK_GOALS: DisplayGoal[] = [
   { id: '1', title: 'Learn UI/UX Design', status: 'active', category: 'Creative', currentStreak: 5, longestStreak: 7, progressPercent: 25 },
-  { id: '2', title: 'Master React Native', status: 'active', category: 'Tech', currentStreak: 3, longestStreak: 3, progressPercent: 15 },
+  { id: '2', title: 'Master React & Next.js', status: 'active', category: 'Tech', currentStreak: 3, longestStreak: 3, progressPercent: 15 },
   { id: '3', title: 'Read 12 Books', status: 'paused', category: 'Personal', currentStreak: 0, longestStreak: 7, progressPercent: 42 },
   { id: '4', title: 'Morning Run Routine', status: 'completed', category: 'Health', currentStreak: 0, longestStreak: 14, progressPercent: 100 },
 ];

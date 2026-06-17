@@ -143,7 +143,7 @@ export function ProgressSection() {
         <div className="bg-bg-surface rounded-xl p-5 border border-border-base shadow-sm space-y-4">
           {[
             { title: 'Learn UI/UX Design', percent: 25 },
-            { title: 'Master React Native', percent: 15 },
+            { title: 'Master React & Next.js', percent: 15 },
             { title: 'Read 12 Books', percent: 42 },
           ].map((goal) => (
             <div key={goal.title}>

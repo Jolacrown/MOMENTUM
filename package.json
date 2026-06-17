@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/clean-cache.js",
     "dev": "next dev",
-    "prebuild": "node scripts/clean-cache.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

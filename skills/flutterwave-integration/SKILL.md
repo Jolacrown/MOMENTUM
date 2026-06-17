@@ -54,7 +54,7 @@ FLW_SECRET_HASH=
 NODE_ENV=development     ← change to 'production' for live
 ```
 
-**Security rule**: All of the above are backend-only. Never expose `CLIENT_SECRET` or `SECRET_KEY` to frontend code, React Native bundles, or client-side API calls.
+**Security rule**: All of the above are backend-only. Never expose `CLIENT_SECRET` or `SECRET_KEY` to frontend code or client-side API calls.
 
 ---
 

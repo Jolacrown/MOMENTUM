@@ -88,8 +88,7 @@ Generates complete, production-ready screens for Momentum. Each screen is compos
 // src/types/screens.ts
 
 interface ScreenProps<Params = Record<string, never>> {
-  navigation: NativeStackNavigationProp<Params>;
-  route: RouteProp<Params>;
+  params: Params;
 }
 
 interface PageProps<Params = Record<string, never>> {
@@ -219,7 +218,7 @@ Every screen must handle these states. The `ScreenState<T>` type captures them:
 | **Empty** | Illustration + headline + CTA | See empty state table below |
 | **Error** | ErrorBanner with retry + offline fallback | `<ErrorBanner message onRetry />`, bg `error500` only for system errors |
 | **Success** | Normal content render | — |
-| **Refreshing** | Pull-to-refresh (mobile) or silent background reload (web) | `RefreshControl` (RN) / `swr` revalidate (web) |
+| **Refreshing** | Silent background reload | `swr` revalidate |
 | **Offline** | Persistent non-dismissible banner at top | `warning500` background, `text-sm` |
 
 ### Empty States per Screen
@@ -470,8 +469,8 @@ Page routes under `(app)` mirror the feature structure:
 
 ## Optimisation Rules
 
-- Lazy-load screens not immediately visible: `React.lazy(() => import('./screens/coach-chat'))` (web) or `lazy` from React Navigation (RN)
-- Prefetch critical data on navigation focus (not on mount): `useFocusEffect` (RN), `usePrefetch` (Next.js)
+- Lazy-load screens not immediately visible: `React.lazy(() => import('./screens/coach-chat'))`
+- Prefetch critical data on navigation focus (not on mount): `usePrefetch` (Next.js)
 - Use `React.memo` for screen-level components with expensive renders
 - TanStack Query `staleTime`: dashboard 5 min, check-ins 1 min, streaks 5 min (backed by Redis), coach history 30s
 - Offline: show last cached screen state with persistent offline banner (see `design-system.md` §Offline)

@@ -187,7 +187,7 @@ When building the coaching system, ensure the code enforces these rules:
 
 - All interactive elements must be reachable via keyboard (web) or assistive tech (mobile)
 - Use semantic HTML elements on web — never div soup
-- Every image must have an `accessibilityLabel` (RN) or `alt` text (web)
+- Every image must have `alt` text
 - Colour is never the sole differentiator — always pair with text or icon
 - Maintain minimum contrast ratios as defined in the design tokens
 - See `design-system.md` for the full accessibility checklist

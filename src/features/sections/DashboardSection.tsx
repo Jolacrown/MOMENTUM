@@ -18,7 +18,7 @@ const EFFORT_LEVELS = [
 
 const FALLBACK_GOALS = [
   { title: 'Learn UI/UX Design', progressPercent: 25, streak: 5 },
-  { title: 'Master React Native', progressPercent: 15, streak: 3 },
+  { title: 'Master React & Next.js', progressPercent: 15, streak: 3 },
   { title: 'Read 12 Books', progressPercent: 42, streak: 7 },
 ];
 

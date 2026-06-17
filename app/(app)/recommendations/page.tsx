@@ -17,7 +17,7 @@ interface Resource {
 
 const RECOMMENDED: Resource[] = [
   { id: 'rec1', title: 'Figma 101: UI Design Fundamentals', provider: 'DesignLab', category: 'UI/UX Design', difficulty: 'Beginner', duration: '4 hours', url: 'https://www.figma.com/community', icon: 'Palette' },
-  { id: 'rec2', title: 'React Native Crash Course', provider: 'Traversy Media', category: 'Mobile Development', difficulty: 'Intermediate', duration: '2 hours', url: 'https://www.youtube.com', icon: 'Smartphone' },
+  { id: 'rec2', title: 'React & Next.js Crash Course', provider: 'Traversy Media', category: 'Web Development', difficulty: 'Intermediate', duration: '2 hours', url: 'https://www.youtube.com', icon: 'Monitor' },
   { id: 'rec3', title: 'Design Thinking for Innovators', provider: 'IDEO U', category: 'Product Design', difficulty: 'Intermediate', duration: '6 weeks', url: 'https://www.ideou.com', icon: 'Layers' },
   { id: 'rec4', title: 'CSS Grid & Flexbox', provider: 'Web Dev Simplified', category: 'Web Development', difficulty: 'Beginner', duration: '45 min', url: 'https://www.youtube.com', icon: 'Smartphone' },
 ];
